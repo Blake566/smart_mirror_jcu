@@ -21,7 +21,7 @@ class _HomePageState extends State<HomeScreen> {
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('images/Profile_image.png'),
                 fit: BoxFit.cover,
@@ -32,142 +32,37 @@ class _HomePageState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 90),
-                Text(
+                const SizedBox(height: 90),
+                const Text(
                   "You are in control",
                   style: TextStyle(fontSize: 32),
                 ), // Text size increased to 32
                 // Three Buttons
-                SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(188, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            14.0), // Set border radius here
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Log',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
+                const SizedBox(height: 30),
+                // Lon in button
+                ButtonToPage('Log in', LoginPage(), 50),
+                const SizedBox(height: 8),
+                // Sign up button
+                ButtonToPage('Sign up', SignupPage(), 50),
+                const SizedBox(height: 8),
+                // Biometric sign up button
+                const ButtonToPage(
+                  'Biometric sign up show us your best selfie',
+                  RegistrationScreen(),
+                  84,
                 ),
-                SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignupPage()));
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(188, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            14.0), // Set border radius here
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                  ),
-                ),
-                SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegistrationScreen()));
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(188, 85)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            14.0), // Set border radius here
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Biometric Sign Up Show us your best selfie',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                Spacer(), // Spacer to push the next buttons to the bottom
-                // Transparent Button 1
+                const Spacer(), // Spacer to push the next buttons to the bottom
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => JournalPage()));
-                        // Add your transparent button 1 functionality here
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0x80FFFFFF)), // Transparent background
-                        elevation: MaterialStateProperty.all<double>(
-                            0), // No elevation
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.all(0)),
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(151, 34)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                14.0), // Set border radius here
-                          ), // No padding
-                        ),
-                      ),
-                      child: Text('Journal'),
-                    ),
-                    SizedBox(
+                    ReusableButton(Colors.white, const Color(0x33FFFFFF),
+                        const Icon(Icons.menu_book), 'Journal', JournalPage()),
+                    const SizedBox(
                       width: 50,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => chatPage()));
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Color(0x80FFFFFF)), // Transparent background
-                        elevation: MaterialStateProperty.all<double>(
-                            0), // No elevation
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.all(0)),
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(151, 34)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                14.0), // Set border radius here
-                          ), // No padding
-                        ), // No padding
-                      ),
-                      child: Text('Chat'),
-                    ),
+                    const ReusableButton(Colors.white, Color(0x33FFFFFF),
+                        Icon(Icons.chat_bubble), 'Chat', chatPage()),
                   ],
                 ),
                 // Transparent Button 2
@@ -177,5 +72,94 @@ class _HomePageState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+}
+
+class ButtonToPage extends StatefulWidget {
+  const ButtonToPage(this.buttonText, this.toPage, this.buttonHeight,
+      {super.key});
+  final String buttonText;
+  final Widget toPage;
+  final double buttonHeight;
+
+  @override
+  State<ButtonToPage> createState() => _ButtonToPageState();
+}
+
+class _ButtonToPageState extends State<ButtonToPage> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => widget.toPage));
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+        fixedSize:
+            MaterialStateProperty.all<Size>(Size(188, widget.buttonHeight)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14.0), // Set border radius here
+          ),
+        ),
+      ),
+      child: Text(
+        widget.buttonText,
+        style: const TextStyle(color: Colors.white, fontSize: 17),
+      ),
+    );
+  }
+}
+
+class ReusableButton extends StatefulWidget {
+  const ReusableButton(this.foreColor, this.backColor, this.buttonIcon,
+      this.buttonText, this.newPage,
+      {super.key});
+  final Color foreColor;
+  final Color backColor;
+  final Icon buttonIcon;
+  final String buttonText;
+  final Widget newPage;
+
+  @override
+  State<ReusableButton> createState() => _ReusableButtonState();
+}
+
+class _ReusableButtonState extends State<ReusableButton> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => widget.newPage));
+          // Add your transparent button 1 functionality here
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+              widget.backColor), // Transparent background
+          elevation: MaterialStateProperty.all<double>(0), // No elevation
+          padding:
+              MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(0)),
+          fixedSize: MaterialStateProperty.all<Size>(const Size(151, 34)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(14.0), // Set border radius here
+            ), // No padding
+          ),
+          foregroundColor: MaterialStateProperty.all<Color>(
+            widget.foreColor, // Set text and icon color to white
+          ),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          widget.buttonIcon,
+          const SizedBox(
+            width: 6,
+          ),
+          Text(
+            widget.buttonText,
+          ),
+        ]));
   }
 }
